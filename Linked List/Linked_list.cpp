@@ -5,6 +5,7 @@ using namespace std;
 template <class T>
 class Linked_list
 {
+protected:
     struct Node
     {
         T data;
@@ -18,17 +19,19 @@ class Linked_list
     shared_ptr<Node> tail;
     size_t size;
 
-public:
+protected:
     Linked_list() : head(nullptr), tail(nullptr), size(0) {}
-    
-    size_t get_size() const;
-    bool is_empty() const;
+
     void insert_head(const T& value);
     void insert_tail(const T& value);
     void remove_head();
     void remove_tail();
     T& get_head() const;
-    T& get_tail() const; 
+    T& get_tail() const;
+
+public:
+    size_t get_size() const;
+    bool is_empty() const;
 };
 
 template <class T>
