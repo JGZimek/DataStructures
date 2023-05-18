@@ -24,7 +24,7 @@ void Priority_queue<T,P>::enqueue(const T& value, const P& priority)
 {
     shared_ptr<Node> new_node = make_shared<Node>(value, priority);
 
-    if (this -> is_empty() || priority >= static_pointer_cast<Node>(this -> head) -> priority)
+    if (this -> is_empty() || priority > static_pointer_cast<Node>(this -> head) -> priority)
     {
         this -> insert_head(value);
     }
