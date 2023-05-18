@@ -19,6 +19,9 @@ protected:
     shared_ptr<Node> tail;
     size_t size;
 
+protected:
+    Linked_list() : head(nullptr), tail(nullptr), size(0) {}
+
     void insert_head(const T& value);
     void insert_tail(const T& value);
     void remove_head();
@@ -27,7 +30,6 @@ protected:
     T& get_tail() const;
 
 public:
-    Linked_list() : head(nullptr), tail(nullptr), size(0) {}
     size_t get_size() const;
     bool is_empty() const;
 };
