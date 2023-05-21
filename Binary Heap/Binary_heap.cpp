@@ -2,51 +2,57 @@
 #include <vector>
 using namespace std;
 
-template <class T>
+template <class T, class P>
 class Binary_heap 
 {
-private:
-    vector<T> heap;
+protected:
+    struct Node 
+    {
+        T value;
+        P priority;
+
+        Node(const T& value_arg, const P& priority_arg) : value(value_arg), priority(priority_arg) {}
+    };
+    vector<Node> heap;
+
     void heapify_up(int index);
     void heapify_down(int index);
-
-protected:
-    void insert(const T& value);
+    void insert(const T& value, int priority);
     const T& get_min() const;
     void delete_min();
 
 public:
     Binary_heap() {}
-    bool is_empty() const; 
+    bool is_empty() const;
     int get_size() const;
 };
 
-template <class T>
-void Binary_heap<T>::heapify_up(int index) 
+template <class T, class P>
+void Binary_heap<T,P>::heapify_up(int index) 
 {
     if (index == 0) {return;}
 
     int parent_index = (index - 1) / 2;
-    if (heap[parent_index] > heap[index]) 
+    if (heap[parent_index].priority > heap[index].priority) 
     {
         swap(heap[parent_index], heap[index]);
         heapify_up(parent_index);
     }
 }
 
-template <class T>
-void Binary_heap<T>::heapify_down(int index) 
+template <class T, class P>
+void Binary_heap<T,P>::heapify_down(int index) 
 {
     int left_child_index = 2 * index + 1;
     int right_child_index = 2 * index + 2;
     int smallest_index = index;
 
-    if (left_child_index < heap.size() && heap[left_child_index] < heap[smallest_index]) 
+    if (left_child_index < heap.size() && heap[left_child_index].priority < heap[smallest_index].priority) 
     {
         smallest_index = left_child_index;
     }
 
-    if (right_child_index < heap.size() && heap[right_child_index] < heap[smallest_index]) 
+    if (right_child_index < heap.size() && heap[right_child_index].priority < heap[smallest_index].priority) 
     {
         smallest_index = right_child_index;
     }
@@ -58,37 +64,38 @@ void Binary_heap<T>::heapify_down(int index)
     }
 }
 
-template <class T>
-bool Binary_heap<T>::is_empty() const 
+template <class T, class P>
+bool Binary_heap<T,P>::is_empty() const 
 {
     return heap.empty();
 }
 
-template <class T>
-int Binary_heap<T>::get_size() const 
+template <class T, class P>
+int Binary_heap<T,P>::get_size() const 
 {
     return heap.size();
 }
 
-template <class T>
-void Binary_heap<T>::insert(const T& value) 
+template <class T, class P>
+void Binary_heap<T,P>::insert(const T& value, int priority) 
 {
-    heap.push_back(value);
+    Node new_node (value, priority);
+    heap.push_back(new_node);
     heapify_up(heap.size() - 1);
 }
 
-template <class T>
-const T& Binary_heap<T>::get_min() const 
+template <class T, class P>
+const T& Binary_heap<T,P>::get_min() const 
 {
     if (is_empty()) 
     {
         throw runtime_error("Heap is empty");
     }
-    return heap[0];
+    return heap[0].value;
 }
 
-template <class T>
-void Binary_heap<T>::delete_min() 
+template <class T, class P>
+void Binary_heap<T,P>::delete_min() 
 {
     if (is_empty()) 
     {
