@@ -1,17 +1,13 @@
 #include <iostream>
+#include "Linked List/Linked_list.cpp"
+#include "Binary Heap/Binary_heap.cpp"
 #include "Priority Queue/Priority_Queue_List.cpp"
 using namespace std;
 
 int main()
 {
-    Priority_queue<int, int> my_pq;
-    my_pq.enqueue(5,3);
-    my_pq.enqueue(5,5);
-    my_pq.enqueue(50,1);
-    my_pq.enqueue(20,1);
-    cout << my_pq.get_size() << endl;
-    my_pq.dequeue();
-    cout << my_pq.front() << endl;
+    Priority_queue_list<int, int> my_pq;
+    Binary_heap<int> my_h;
     
     return 0;
 }

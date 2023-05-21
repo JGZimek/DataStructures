@@ -1,10 +1,9 @@
 #include <iostream>
 #include <memory>
-#include "../Linked List/Linked_list.cpp"
 using namespace std;
 
 template <class T, class P>
-class Priority_queue : public Linked_list<T>
+class Priority_queue_list : public Linked_list<T>
 {
     struct Node : public Linked_list<T>::Node
     {
@@ -14,13 +13,15 @@ class Priority_queue : public Linked_list<T>
     };
 
 public:
+    Priority_queue_list() {}
+
     void enqueue(const T& value, const P& priority);
     void dequeue();
     T& front() const;
 };
 
 template <class T, class P>
-void Priority_queue<T,P>::enqueue(const T& value, const P& priority)
+void Priority_queue_list<T,P>::enqueue(const T& value, const P& priority)
 {
     shared_ptr<Node> new_node = make_shared<Node>(value, priority);
 
@@ -57,7 +58,7 @@ void Priority_queue<T,P>::enqueue(const T& value, const P& priority)
 }
 
 template <class T, class P>
-void Priority_queue<T,P>::dequeue()
+void Priority_queue_list<T,P>::dequeue()
 {
     if (this -> is_empty())
     {
@@ -67,7 +68,7 @@ void Priority_queue<T,P>::dequeue()
 }
 
 template <class T, class P>
-T& Priority_queue<T,P>::front() const
+T& Priority_queue_list<T,P>::front() const
 {
     if (this -> is_empty())
     {
