@@ -1,7 +1,3 @@
-#include <iostream>
-#include <vector>
-using namespace std;
-
 class Graph_inc_matrix
 {
     int num_vertices;
@@ -17,10 +13,12 @@ public:
 
 void Graph_inc_matrix::add_edge(int source, int destination, int weight)
 {
-    static int edge_count = 0;
-    inc_matrix[source][edge_count] = weight;
-    inc_matrix[destination][edge_count] = weight;
-    edge_count++;
+    static int edge_counter = 0;
+
+    inc_matrix[source][edge_counter] = weight;
+    inc_matrix[destination][edge_counter] = weight;
+
+    edge_counter++;
 }
 
 void Graph_inc_matrix::prim_mst()
@@ -29,68 +27,42 @@ void Graph_inc_matrix::prim_mst()
     vector<int> parent(num_vertices, -1);
     vector<int> key(num_vertices, INT_MAX);
 
+    Priority_queue_heap<int, int> my_pq;
+
     int start_vertex = 0;
+    my_pq.enqueue(start_vertex, 0);
     key[start_vertex] = 0;
 
-    for (int i = 0; i < num_vertices - 1; i++)
+    while (!my_pq.is_empty())
     {
-        int min_key = INT_MAX;
-        int min_index = -1;
-        for (int j = 0; j < num_vertices; j++)
+        int current_vertex = my_pq.front();
+        my_pq.dequeue();
+        visited[current_vertex] = true;
+
+        for (int edge = 0; edge < num_edges; edge++)
         {
-            if (!visited[j] && key[j] < min_key)
+            int neighbor = -1;
+            int weight = 0;
+
+            if (inc_matrix[current_vertex][edge] != 0)
             {
-                min_key = key[j];
-                min_index = j;
-            }
-        }
-
-        visited[min_index] = true;
-
-        for (int k = 0; k < num_edges; k++)
-        {
-            int source = -1;
-            int destination = -1;
-            bool found_source = false;
-            bool found_destination = false;
-
-            for (int v = 0; v < num_vertices; v++)
-            {
-                if (inc_matrix[v][k] != 0)
+                for (int i = 0; i < num_vertices; i++)
                 {
-                    if (source == -1)
+                    if (inc_matrix[i][edge] != 0 && i != current_vertex)
                     {
-                        source = v;
-                        found_source = true;
-                    }
-                    else
-                    {
-                        destination = v;
-                        found_destination = true;
+                        neighbor = i;
+                        weight = inc_matrix[i][edge];
                         break;
                     }
                 }
             }
 
-            if (found_source && found_destination)
+            if (neighbor != -1 && !visited[neighbor] && weight < key[neighbor])
             {
-                if (!visited[source] && inc_matrix[source][k] < key[source])
-                {
-                    parent[source] = destination;
-                    key[source] = inc_matrix[source][k];
-                }
-                else if (!visited[destination] && inc_matrix[destination][k] < key[destination])
-                {
-                    parent[destination] = source;
-                    key[destination] = inc_matrix[destination][k];
-                }
+                parent[neighbor] = current_vertex;
+                key[neighbor] = weight;
+                my_pq.enqueue(neighbor, weight);
             }
         }
-    }
-
-    cout << "Minimum spanning tree: " << endl;
-    for (int i = 1; i < num_vertices; i++)
-    {
-        cout << "Edge: " << parent[i] << " - " << i << endl;
     }
 }

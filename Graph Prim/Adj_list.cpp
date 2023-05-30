@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <climits>
 using namespace std;
 
 class Edge
@@ -26,7 +27,8 @@ public:
 
 void Graph_adj_list::add_edge(int source, int destination, int weight)
 {
-    Edge edge(source, destination, weight);adj_list[source].push_back(edge);
+    Edge edge(source, destination, weight);
+    adj_list[source].push_back(edge);
 
     Edge reverseEdge(destination, source, weight);
     adj_list[destination].push_back(reverseEdge);
@@ -62,10 +64,5 @@ void Graph_adj_list::prim_mst()
                 my_pq.enqueue(neighbor, weight);
             }   
         }
-    }
-    cout << "Minimum spanning tree: " << endl;
-    for (size_t i = 1; i < num_vertices; i++)
-    {
-        cout << "Edge: " << parent[i] << " - " << i << endl;
     }
 }
