@@ -3,20 +3,20 @@
 #include <climits>
 using namespace std;
 
-class Edge
+class Edge_al
 {
 public:
     int source;
     int destination;
     int weight;
 
-    Edge(int source_arg, int destination_arg, int weight_arg) : source(source_arg), destination(destination_arg), weight(weight_arg) {}
+    Edge_al(int source_arg, int destination_arg, int weight_arg) : source(source_arg), destination(destination_arg), weight(weight_arg) {}
 };
 
 class Graph_adj_list 
 {
     int num_vertices;
-    vector<vector<Edge>> adj_list;
+    vector<vector<Edge_al>> adj_list;
 
 public:
     Graph_adj_list(int num_vertices_arg) : num_vertices(num_vertices_arg), adj_list(num_vertices_arg) {}
@@ -27,10 +27,10 @@ public:
 
 void Graph_adj_list::add_edge(int source, int destination, int weight)
 {
-    Edge edge(source, destination, weight);
+    Edge_al edge(source, destination, weight);
     adj_list[source].push_back(edge);
 
-    Edge reverseEdge(destination, source, weight);
+    Edge_al reverseEdge(destination, source, weight);
     adj_list[destination].push_back(reverseEdge);
 }
 
@@ -52,7 +52,7 @@ void Graph_adj_list::prim_mst()
         my_pq.dequeue();
         visited[courrent_vertex] = true;
 
-        for (const Edge& edge : adj_list[courrent_vertex])
+        for (const Edge_al& edge : adj_list[courrent_vertex])
         {
             int neighbor = edge.destination;
             int weight = edge.weight;
