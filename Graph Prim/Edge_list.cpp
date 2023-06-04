@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <climits>
-
 using namespace std;
 
 class Edge_el 
@@ -11,59 +10,58 @@ public:
     int destination;
     int weight;
 
-    Edge_el(int src, int dest, int w) : source(src), destination(dest), weight(w) {}
+    Edge_el(int source_arg, int destination_arg, int weight_arg) : source(source_arg), destination(destination_arg), weight(weight_arg) {}
 };
 
 class Graph_edge_list 
 {
     int num_vertices;
-    vector<Edge_el> edges;
+    vector<Edge_el> edge_list;
 
 public:
-    Graph_edge_list(int num_vertices_arg);
+    Graph_edge_list(int num_vertices_arg) : num_vertices(num_vertices_arg) {}
+
     void add_edge(int source, int destination, int weight);
     void prim_mst();
 };
 
-Graph_edge_list::Graph_edge_list(int num_vertices_arg) : num_vertices(num_vertices_arg) {}
-
-void Graph_edge_list::add_edge(int source, int destination, int weight) 
+void Graph_edge_list::add_edge(int source, int destination, int weight)
 {
     Edge_el edge(source, destination, weight);
-    edges.push_back(edge);
-
-    Edge_el reverseEdge(destination, source, weight);
-    edges.push_back(reverseEdge);
+    edge_list.push_back(edge);
 }
 
-void Graph_edge_list::prim_mst() 
+void Graph_edge_list::prim_mst()
 {
     vector<bool> visited(num_vertices, false);
     vector<int> parent(num_vertices, -1);
     vector<int> key(num_vertices, INT_MAX);
 
-    Priority_queue_heap<pair<int, int>, int> pq;
+    Priority_queue_heap<int, int> my_pq;
 
     int start_vertex = 0;
-    pq.enqueue(make_pair(0, start_vertex), 0);
+    my_pq.enqueue(start_vertex, 0);
     key[start_vertex] = 0;
 
-    while (!pq.is_empty()) 
+    while (!my_pq.is_empty())
     {
-        pair<int, int> top = pq.front();
-        pq.dequeue();
+        int current_vertex = my_pq.front();
+        my_pq.dequeue();
+        visited[current_vertex] = true;
 
-        int u = top.second;
-
-        visited[u] = true;
-
-        for (const auto& edge : edges) 
+        for (const Edge_el& edge : edge_list)
         {
-            if (edge.source == u && !visited[edge.destination] && edge.weight < key[edge.destination]) 
+            if (edge.source == current_vertex || edge.destination == current_vertex)
             {
-                parent[edge.destination] = u;
-                key[edge.destination] = edge.weight;
-                pq.enqueue(make_pair(key[edge.destination], edge.destination), key[edge.destination]);
+                int neighbor = (edge.source == current_vertex) ? edge.destination : edge.source;
+                int weight = edge.weight;
+
+                if (!visited[neighbor] && weight < key[neighbor])
+                {
+                    parent[neighbor] = current_vertex;
+                    key[neighbor] = weight;
+                    my_pq.enqueue(neighbor, weight);
+                }
             }
         }
     }

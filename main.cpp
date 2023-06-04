@@ -3,7 +3,7 @@
 #include <climits>
 #include <random>
 #include <chrono>
-#include "Priority Queue/Priority_Queue_Heap.cpp"
+#include "Priority Queue/Priority_queue_heap.cpp"
 #include "Graph Prim/Adj_list.cpp"
 #include "Graph Prim/Adj_matrix.cpp"
 #include "Graph Prim/Edge_list.cpp"
@@ -61,7 +61,6 @@ void generate_random_graph(Graph_edge_list& graph, int num_vertices, double dens
         int weight = dis_weight(gen);
 
         graph.add_edge(source, destination, weight);
-        // graph.add_edge(destination, source, weight);  // Dodaj krawędź w drugą stronę, ponieważ graf jest nieskierowany
     }
 }
 
